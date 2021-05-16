@@ -59,9 +59,7 @@ func Connect() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	log.Println("GridFS bucket created!")
-
+	
 	Database = database{Database: client.Database(dbName)}
 	fmt.Println("Collection instance created!")
 }
