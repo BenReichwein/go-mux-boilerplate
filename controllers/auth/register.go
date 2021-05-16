@@ -1,18 +1,20 @@
-package database
+package auth
 
 import (
 	"context"
+	"server/constants"
+	"server/database"
 	"server/models"
 
-	"go.mongodb.org/mongo-driver/bson"
 	"golang.org/x/crypto/bcrypt"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 // Registers user to the database
 func Register(user models.User) (models.ResponseResult) {
 	var result models.User
 	var res models.ResponseResult
-	err := collection.FindOne(context.TODO(), bson.M{"username": user.Username}).Decode(&result)
+	err := database.Database.FindOne(context.TODO(), constants.USER_COLL, bson.M{"username": user.Username}).Decode(&result)
 	if err != nil {
 		if err.Error() == "mongo: no documents in result" {
 			hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 5)
@@ -24,7 +26,7 @@ func Register(user models.User) (models.ResponseResult) {
 				user.Password = string(hash)
 			}
 
-			_, err = collection.InsertOne(context.TODO(), user)
+			_, err = database.Database.InsertOne(context.TODO(), constants.USER_COLL, user)
 			if err != nil {
 				res.Error = "Error While Creating User, Try Again"
 				return res

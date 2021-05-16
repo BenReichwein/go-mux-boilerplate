@@ -2,6 +2,7 @@ package router
 
 import (
 	"server/controllers"
+	"server/controllers/auth"
 
 	"github.com/gorilla/mux"
 )
@@ -12,8 +13,8 @@ func Router() *mux.Router {
 	router := mux.NewRouter()
 	// Setting up endpoints
 	router.HandleFunc("/api/home", controllers.Home).Methods("GET", "OPTIONS")
-	router.HandleFunc("/api/auth/gettoken", controllers.GetToken).Methods("GET", "OPTIONS")
-	router.HandleFunc("/api/auth/login", controllers.LoginHandler).Methods("POST", "OPTIONS")
-	router.HandleFunc("/api/auth/register", controllers.RegisterHandler).Methods("POST", "OPTIONS")
+	router.HandleFunc("/api/auth/gettoken", auth.GetToken).Methods("GET", "OPTIONS")
+	router.HandleFunc("/api/auth/login", auth.LoginHandler).Methods("POST", "OPTIONS")
+	router.HandleFunc("/api/auth/register", auth.RegisterHandler).Methods("POST", "OPTIONS")
 	return router
 }

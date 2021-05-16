@@ -1,4 +1,4 @@
-package controllers
+package auth
 
 import (
 	"encoding/json"
@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"server/database"
+
 	"server/models"
 )
 
@@ -28,7 +28,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error, Try Again", http.StatusForbidden)
 		return
 	}
-	res = database.Register(user)
+	res = Register(user)
 	if res.Error != "" {
 		http.Error(w, res.Error, http.StatusForbidden)
 	} else {
@@ -52,7 +52,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	result, res := database.Login(user)
+	result, res := Login(user)
 	if res.Error != "" {
 		http.Error(w, res.Error, http.StatusForbidden)
 	} else {
